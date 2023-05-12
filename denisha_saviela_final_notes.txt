@@ -1,0 +1,426 @@
+everything is a file --> has a path to that file
+	i.e. Dekstop path: /home/user1/Desktop
+/ == root
+. == current directory
+.. == parent directory
+~ == user home directory
+	i.e. /home/user1/
+man == manual command
+pwd == print working directory
+	tells you where you are in the filesystem
+cp == copy file
+ls == list directory contents
+	use ls to see what's in the directory
+ls [directory]* == shows contents in [directory] without having to go into the directory
+ls [A-Z]* == list contents in alhpabetical order
+cd [directory] == change directory
+	use cd to move through the filesystem
+cd [destination]/[destination]/[destination] == move through directories in one command
+mkdir [directory] == make directory
+	creates new directories
+rmdir [directory] == remove directory
+	removes EMPTY directories
+	permanent --> has no trash bin
+touch [file] == create new files
+rm [file] == removes files
+mv [source] [destination] == move files
+mv [source] [source] -t [destination] == move multiple files in one command
+cp [source] [destination] == copy files
+less [file]
+	quickly read files
+apropos [string]
+	search the manual for a command
+cd .. == goes back to parent directory
+cd ../../ == execute in one command
+alias == given string VALUE to a usual shorter string name
+        ex. alias cp='cp -i'
+                cp runs as an i command
+        ex. alias updatetime='touch =c'
+unalias cd == unalias the command
+aliases will be "forgotten" when the terminal relaunches
+stat [option] [file] == provides status information about each file
+df [options] [file] == free disk space
+        use df when you need storage information
+stdin == standard input stream
+        0<
+stdout == standard output stream
+        1>
+stderr == standard error stream
+        2>
+ech [-n|-e] [string] == displays string
+        print things out of programs
+cat [file] == concatenates each file
+        ex. cat file.txt
+                file.txt: Is a directory
+CMD [>|1>] [file] = write CMD output to file
+        ex. echo "write this to file.txt" > file.txt
+CMD [>>|1>>] [file] == add CMD output to file by redirecting stdout to file
+        ex. echo "add this to foo.txt" >> foo.txt
+CMD [< | 0<] [file] == read CMD input from file by redirecting stdin to file
+        ex. wc 0< foo.txt
+CMD 2> [file] == filter CMD's error and write to file by redirecting stderr to file
+        ex. mkdir dir1/dir2 2> new_err.txt
+CDM 2>> [file] == filter CMD's errors and add to file by redirecting stderr to file
+        ex. mkdir dir1/dir2 2>> err.txt
+/dev/null == The Unix Waste Bin
+        not a recycle bin
+        files sent here are permanently deleted
+        ex. wc -w foo.txt > words.txt 2> /dev/null
+
+> == use to move from one file to another
+        ex. cat file1 > file2
+OR
+cp == copy
+        ex. file1 file2
+append errors to file [errlog]
+        ex. cat file1 > file2 2>>errlog
+store files in present working directory
+        ex. pwd > file 
+        OR
+        ex. file=$(pwd)
+accept file as input
+        ex. 0< file
+
+wc == word count
+[NAME] = [VALUE] == sets VALUE as NAME
+        only avaliable in terminal session
+no man for export: help export
+export [-n|-p] [NAME]=[VALUE] == creates environment variable NAME with value NAME
+
+shell script is a file containing a sequence of shell commands, functions, and logical blocks
+        file extension: .sh
+        define shell in first line via #!/bin/sh
+        must give execute permission: chmod +x foo.sh
+        execute via ./foo.sh
+
+shell script example:
+make a script: $ vim test_script.sh
+#!/bin/sh (or use bash)
+newdir=out
+file=test.txt
+mkdir $newdir
+cd $newdir
+echo "We generated this file" > $file
+echo "and wrote to it" >> $file
+echo -n "Script complete, wrote to: "
+echo $PWD
+give execute permission (only once): $ chmod +x test_script.sh
+execute: $ ./test_script.sh
+
+exit status
+0 == successful execution of command
+1 == catchall for general execution errors
+127 == command not found
+
+command line arguments
+CMD  arg1  arg2  arg3  arg4  ...  arg10  ...
+ ^    ^     ^     ^     ^           ^    
+$0   $1    $2    $3    $4    ...   $10   ...
+
+$# == number of argument supplied to script
+$* == all arguments (treated as one double quotes string)
+$@ == all arguments (treated as individual double quoted strings)
+$$ == the process of the number of the current shell
+$! == the process number of the last background command
+
+logical expressions
+[[ !expr ]] == expr is false
+[[ STR1 == STR2 ]] == STR1 is equal to STR2
+[[ STR1 != STR2 ]] == STR1 is not equal to STR2
+[[ INT1 > INT2 ]] == INT1 is greater than INT2
+[[ INT1 < INT2 ]] == INT1 is less than INT2
+
+if statements
+bash:
+if [[ expr1 ]]
+then
+  statement1
+  statement2
+  ...
+elif [[ expr2 ]]
+  statement3
+  statement4
+  ...
+else
+  statement5
+  ...
+fi <-- (commands gets executed if the condition evaluates to TRUE; if condition is FALSE the command is ignored)
+
+while loops
+bash:
+while [[ expr ]]
+do
+  statement1
+  statement2
+  ...
+done
+
+for loops
+bash:
+for var in word1 word2 ... wordn
+do
+  statement1
+  statement2
+  ...
+done
+
+for var in {min..max..incr}
+do
+  statement1
+  statement2
+  ...
+done
+
+Process ID (PID) == a unique number assigned to each process
+top == shows all running processes
+        ex. top -u dsaviela
+ps == list all processes for curent user
+        ex. ps -e == see all processes
+            ps  r == see only running processes
+ps -C [command]
+        ex. ps -C chrome == see if chrome is running
+pgrep == search for process
+        ex. pgrep bash == outputs the PID of a processes
+kill == stop a process
+pkill == stop a specific process with given name
+killall == stop all current 
+nice == allows the declaring of priority of processes (move to priority list)
+        makes sure it always runs
+grep == searches word
+        similar to ctrl+f
+ctrl + c == stops program from running
+single parenthesis w/ $ + no space == command substitution
+        run a command
+        $(command)
+double bracket == to figure out true or false in bash (evaluate boolean expressions)
+[[ command ]] <-- with spaces in bracket
+        if [[ 1 -eq $var ]]; then
+        echo "hi there"
+fi
+double parenthesis == used to evaluate arithmetic expressions
+        [[10<20]] does not work
+        [[ 10 < 20 ]] works
+        ((10<20)) works
+        (( 10 < 20 )) works
+single bracket == for backwards compatibility
+used for test commands
+-eq -lt -ge -le == comparing integer numbers (only whole numbers)
+        [[ 1 -eq $var ]]
+comparing strings
+        [[ "$string1" = "$string2" ]]
+review operations
+$(( 3 + 1 )) evaluates a 4
+
+Fizzbuzz
+#!/bin/bash
+for i in $@
+do
+        if [[ $((i % 3)) == 0 && $((i % 5 )) == 0 ]]
+        then
+                echo "FizzBuzz" 
+        elif [[ $((i % 3)) == 0 ]]
+        then
+                echo "Fizz"
+        elif [[ $((i % 5)) == 0 ]]
+        then
+                echo "Buzz"
+        else
+                echo $i
+        fi
+done
+
+/sh vs. /bash
+isengard has access to bash
+shell scripts - runs on any linux platform
+        use [ ] in sh
+bash scripts - everything in shell is in bash
+        use [[ ]] and (( )) in bash
+
+pipelines ~ let us send data directly from one command to the next w/o temporary file
+        ex. cmd1 | cmd2 | cmd2 | ...
+        can chain multiple commands
+C++: avg(exp(abs(get_val()))); == unix: get_val | abs | exp | avg
+head [-n] [file] == print the first 10 lines of each file
+        -n == specifies the number of lines to print
+        ex. head -n 3 foo.txt
+tail [-n] [file] == print last 10 lines of each file
+        -n == specifies the number of lines to print
+        ex. tail -n 5 bar.txt
+        ex. tail -f [file]
+        -f == live monitor a file
+        ctrl + c to esc
+sort [-o|-r|-c|-u|-k] [file] == sort file line by line
+        -o [file1] ==  write to output [file1] instead of stdout
+        -r == sort in reverse order
+        -c == check for sorted input before sorting
+                ex. sort [file] | uniq -c == count
+        -u == remove duplicates
+        -k [col] == sort by column col
+                ex. -ur foo.txt -o bar.txt
+tee [-a] [file] == copy stdin to each file and also to stdout (write both to file and to output terminal)
+        -a == appends to each file
+        ex. tee out.txt < input.txt
+uniq [-c|-d|-u] [file] == check for unique line in [file]. file is printed to stdout w/ duplicate remove
+        -c == count occurances of each line
+        -d == output just the duplicate lines
+        -u == output just unique lines
+        ex. uniq -d foo.txt
+tr [pattern] [new pattern] == used for translating or deleting characters, supports range of transformations including uppercase to lowercase, deleting specific characters, basic find and replace, etc.
+        reads from stdin
+        ex. echo "new lines" | tr "[:blank:]" "\n"
+        ex. cat lowercase.txt | tr "[a-z]" "[A-Z]" > uppercase.txt
+        ex. echo "no spaces" | tr -d "[:blank:]"
+
+grep == global search
+        regular expressions
+        print
+- power search in files and directories
+grep [-i|-c|-l|-n] [pattern] [file]
+        ex. grep "foo" bar
+        -i == ignore case
+        -c == return total match count instead of line contents
+        -l == return names of matched files, instead of line contents
+        -n == show line numbers
+        -v == return lines which do not match pattern
+
+ex.
+        grep '[word]' [text file] == outputs all [word] from that [text file]
+        grep ^foo [text file] == outputs all foo in [text file]
+        grep -E 'foo|bar' [text file] == outputs all foo and bar in that text file
+        grep '^foo$' [text file] == directories with foo only
+
+Special Characters for Pattern Matching
+ex.     grep "t.o" bar == match any character once
+ex.     grep "[A-Z]" foo == match one character from options in brackets
+ex.     grep "t[^w]o" file == match anything except c
+ex.     grep "^[A-Z]" temp == match lines that start with c
+ex.     grep "[A-z}$" temp == match lines that end with c
+ex.     grep "[A-Z]*" temp == repeat c 0 or more times
+
+find things with periods escape with slashes
+        ex. grep '192\.168\.1\.124' host
+
+Find all unique instances that start with bar and only display them in reverse alphabetical order
+        grep -E '^bar' [text file] | sort -ru
+
+Unix Security Approach
+- organize users into groups
+- create seperate permissions for owner (u), group (g), and other users (o)
+- specify r/w/x permissions for these classes of user, for each file
+- control permissions with $ chmod
+
+Uses Octal instead of Binary
+       Permission           Shorthand        Number (Octal)
+          none                 ---                  0
+         execute               --x                  1
+          write                -w-                  2
+    execute & write            -wx                  3
+          read                 r--                  4
+      read & execute           r-x                  5
+      read & write             rw-                  6
+     all permissions           rwx                  7
+
+ex. chmod +7 == all permissions (similar to +x)
+
+-rwxr-xr--
+1. first character identifies the file type, if dash(-) then it's normal file, if d it's directory
+2. user - next 3 characters represent the permission for the owner, letter represents the presence of permission, dash represent absence of permission
+3. group - following 3 characters represent permissions for the group
+4. other - last 3 characters represent permissions for other (everyone else)
+
+ls -l
+1st column == shows permission for each file/dir
+2nd column == shows number of links to a file
+3rd column == shows user/owner(u)
+4th column == shows group (g)
+
+execute permissions on file means the right to execute them, if they're programs (files that are not programs should not be given execute permission)
+execute permission for directories allows you to enter (cd into it) the directory, and access any files
+
+chmod [options] [perm.] [file] == change the permissions (mode) of each file
+format: [u|g\o|a][+|-|=][r|w|x] == user|group|other|all
+        + == add permission
+        - == remove permission
+        = == set permission
+chown [-v|-R] [new-u:new-g] [file] == change owner and group to new-u and new-g for each file
+        -v == verbose
+        -R == executes command recursively on files and directories
+        ex. chown sddale:sddale yourfile
+
+User Pipeline Utilities
+who == shows all users on the server right not
+w == what users are running right now
+whoami == shows login user
+user == shows all users currently on
+        ex. users | sort == sort alphabetical
+
+superuser - root
+        root access
+        RWX permissions for every file in the filesystem
+        terminal prompt is often # instead of $
+
+su [options] [user] == substitute user
+        commonly used to change user to the superuser (root) (can change into other users)
+        if no USER is specified, root is assumed
+        ctrl + D to logout of USER
+        *dangerous - gives people root level access (rwx)
+sudo [option] [CMD]
+        run CMD as root
+        allows execution of commands with root's privileges, but does not log you in as root
+        can be used to execute commands as a different user with -u USER
+        more safe since it keeps a list of sudo-doers
+sudo su == log you in as root (too powerful)
+
+USER ADMIN - creates users and lets people have access to certain things
+# useradd [option] [user] == add a new user account with the provided specifications
+        -m creates a home directory for the new user
+# userdel [option] [user] == delete user's account
+# passwd [option] [user] == change user's password
+        normal user can change their own password
+
+GROUP ADMIN
+# groupadd [option] [user] == add new group with the provided specifications
+# groupdel [group] == delete group
+# gpasswd [option] [group] == change group's password, members, admin, etc.
+
+newgrp [-] [option] [group] == log in as group (change current group ID)
+        if user is root, no password is required
+        a passowrd is required if:
+                user has no password, but group does
+                user is not a group member and the group has a password
+        if no gpassword and user is not listed as a member, access will be denied
+sg [-] [group] [-c] [CMD] == substitute group executes CMD as group
+        allows for execution of a single command as group using -c option
+chgrp [option] [group] [file] == change the group ownership of each file
+        can be used by file's owner (or root) to change the group of file to another they belong
+
+building authentication - allows certain people to do certain things
+/opt == launch apps
+/bin == deploy applictions
+
+metadata - data provides information about other data
+        ls -l == second column represents how many links that file has
+file - actual data blocks containing the file's primary data
+        file is a collection of data blocks on a storage device containing data of interest
+        ex. $ echo "This is an example" > foo
+                file foo is a group of bytes storing "This is an example"
+inode - a struture assigned to each file to store its metadata
+        creating a file creates inode
+        regular file's inode points to its data blocks
+        directory's inode points to it's directory structure
+        ex. ls -i [file] == shows [file]'s inode number
+                actual directory (stores file name and number)
+        ex. df [-i] [file] == show storage drive information for the filesystem of each [file]
+                -i == show system inode counts
+directory structure - table that stores file names and inode numbers
+        ls -d == to inspect a directory (instead of it contents)
+        ls -i will display all files in current dir and their node number
+        directories always have 2 links (parent and child)
+link - multiple files pointing to the same data
+ln [-s] [target] [file == creates a hard link between target and a new file
+        -s == creates a symbolic link instead
+hard link - if 2 files' entries in directory have same inode but different filenames
+        check hard linked data using ls -l
+        second column is hard link count 
+symbolic/soft link - a special file that points to another file
+        similar to pointer can be seen from ls -l
